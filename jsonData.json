@@ -1,0 +1,10 @@
+{
+  "userId": 1,
+  "name": "이미지없는테스트",
+  "description": "이미지 없이 잘 가는지 테스트",
+  "baseAiId": 2,
+  "customPrompt": "3월부터 여름날씨라는데 진짜야?",
+  "aiProvider": "Gemini3",
+  "active": true,
+  "hidden": false
+}

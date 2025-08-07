@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Cafe24Ssurround.ttf",
+      "sha1": "2190407dfb0804fcac3dc52f40e8e639ae2f32ea"
+    },
+    {
+      "path": "assets/fonts/Danjo-bold-Regular.otf",
+      "sha1": "cf180f0a2bef6f5c6af4b2115950cada00f355f1"
+    },
+    {
+      "path": "assets/fonts/PoetsenOne-Regular.ttf",
+      "sha1": "90edb2edd900ad302faeab3b1f0f0b5548649dda"
+    }
+  ]
+}
