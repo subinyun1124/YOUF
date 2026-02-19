@@ -1,10 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-<<<<<<< HEAD
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-=======
->>>>>>> cd3ee9b74a7876b405f0ce3ddd06b2b72c561dab
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -88,12 +85,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-<<<<<<< HEAD
         manifestPlaceholders = [
       appAuthRedirectScheme: 'com.your.package.name'
   ]
-=======
->>>>>>> cd3ee9b74a7876b405f0ce3ddd06b2b72c561dab
     }
     signingConfigs {
         debug {

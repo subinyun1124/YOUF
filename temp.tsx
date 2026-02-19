@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // // https://adjh54.tistory.com/574
 
 // import React, { useEffect, useState } from 'react';
@@ -12,7 +11,7 @@
 // }
 
 // const StompComponent = () => {
-// 	const SERVER_URL = 'http://3.39.234.47:8081/chat'; // STOMP 연결 엔드포인트
+// 	const SERVER_URL = 'http://3.36.247.178:8081/chat'; // STOMP 연결 엔드포인트
 // 	const PUB_ENDPOINT = '/app/chat.sendMessage/1'; // 메시지를 전송하기 위한 엔드포인트
 // 	const SUB_ENDPOINT = '/topic/public/1'; // 메시지를 수신하기 위한 엔드포인트
 
@@ -192,42 +191,3 @@
 // });
 
 // export default StompComponent;
-=======
-// import React from 'react';
-// import { Text, View } from 'react-native';
-// import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-// import { RouteProp, useRoute} from '@react-navigation/native';
-// import MainTab, {MainTabNavigationScreenParams} from './MainTab';
-
-// type RootStackParamList = {
-//   MainTab: MainTabNavigationScreenParams;
-//   Detail: {
-//     id: number;
-//   };
-// };
-
-// export type RootStackNavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
-// const Stack = createNativeStackNavigator<RootStackParamList>();
-
-// type DetailScreenRouteProp = RouteProp<RootStackParamList, 'Detail'>;
-// function DetailScreen() {
-//   const {params} = useRoute<DetailScreenRouteProp>();
-//   return (
-//     <View>
-//       <Text>Detail {params.id} </Text>
-//     </View>
-//   );
-// }
-
-// function RootStack() {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen component = {MainTab} name = "MainTab" options={{headerShown: false}} />
-//       <Stack.Screen component = {DetailScreen} name = "Detail" />
-//     </Stack.Navigator>
-//   );
-// }
-
-// export default RootStack;
->>>>>>> cd3ee9b74a7876b405f0ce3ddd06b2b72c561dab

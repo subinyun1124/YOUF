@@ -18,6 +18,11 @@ import {RootStackParamList} from '../type';
 import CustomHeader from '../CustomHeader';
 import {useUserState} from '../../contexts/UserContext';
 
+const SOCKET_URL =
+  Platform.OS === 'android'
+    ? 'http://10.0.2.2:8081/chat'
+    : 'http://localhost:8081/chat';
+
 type ChatRoomRouteProp = RouteProp<RootStackParamList, 'ChatRoom'>;
 
 interface MessagesType {
@@ -27,7 +32,7 @@ interface MessagesType {
   type: string;
 }
 
-const SOCKET_URL = 'http://3.39.234.47:8081/chat';
+// const SOCKET_URL = 'http://3.36.247.178:8081/chat';
 const PUB_ENDPOINT = '/app/chat.sendMessage/';
 const SUB_ENDPOINT = '/topic/public/';
 

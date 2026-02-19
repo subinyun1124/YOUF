@@ -1,9 +1,14 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 
-const uri = 'http://3.39.234.47:8081';
+const url =
+  Platform.OS === 'android'
+    ? 'http://10.0.2.2:8081'
+    : 'http://localhost:8081';
+// const url = 'http://3.36.247.178:8081';
 
 const API = axios.create({
-  baseURL: uri,
+  baseURL: url,
   withCredentials: true,
 });
 
