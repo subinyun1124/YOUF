@@ -12,11 +12,11 @@ interface registerParams {
   userId: string;
   email: string;
   password: string;
-  fullname: string;
+  username: string;
 }
 export const register = async (params: registerParams) => {
   const response = await axios.post<AuthResult>(
-    url + '/api/join',
+    url + '/api/auth/join',
     params,
   );
   return response.data.data;

@@ -30,7 +30,7 @@ function Login() {
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullname, setFullname] = useState('');
+  const [username, setUsername] = useState('');
 
   const [isRegister, setIsRegister] = useState(false);
 
@@ -79,14 +79,14 @@ function Login() {
     if (isRegister) {
       localregister({
         userId,
-        fullname,
+        username,
         email,
         password,
       });
       setEmail('');
       setPassword('');
       setUserId('');
-      setFullname('');
+      setUsername('');
       setIsRegister(false);
     } else {
       locallogin({
@@ -121,8 +121,8 @@ function Login() {
               style={styles.input}
               placeholder="풀네임"
               placeholderTextColor="#999"
-              value={fullname}
-              onChangeText={setFullname}
+              value={username}
+              onChangeText={setUsername}
               autoCapitalize="none"
             />
           </>

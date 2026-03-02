@@ -13,11 +13,14 @@ export default function useRegister() {
       Alert.alert('회원가입이 완료되었습니다.');
       console.log(data);
     },
-    onError: (error:AuthError) => {
-      const message = error.response?.data?.data?.[0]?.messages[0].message ?? '회원가입 실패';
+    onError: (error: any) => {
+      console.log('🔥 회원가입 에러 전체:', error);
+      console.log('🔥 response:', error.response);
+      console.log('🔥 message:', error.message);
+
       inform({
         title: '오류',
-        message,
+        message: error.message ?? '회원가입 실패',
       });
     },
   });
