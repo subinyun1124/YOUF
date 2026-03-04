@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { AuthResult } from './types';
 import { Platform } from 'react-native';
+import api from './api';
 
 const url =
   Platform.OS === 'android'
@@ -15,8 +15,8 @@ interface registerParams {
   username: string;
 }
 export const register = async (params: registerParams) => {
-  const response = await axios.post<AuthResult>(
-    url + '/api/auth/join',
+  const response = await api.post<AuthResult>(
+    '/api/auth/join',
     params,
   );
   return response.data.data;
@@ -28,8 +28,8 @@ interface loginParams {
   password: string;
 }
 export const login = async (params: loginParams) => {
-  const response = await axios.post<AuthResult>(
-    url + '/api/login',
+  const response = await api.post<AuthResult>(
+    '/api/login',
     params,
   );
   return response.data.data;
@@ -38,42 +38,34 @@ export const login = async (params: loginParams) => {
 
 // 전체 BaseAI 리스트 가져오기
 export const baseAIList = async (userToken:string) => {
-  try {
-    const response = await axios.get(
-      url + '/api/auth/ai/base/all',
-      {
-        headers: {
-          Authorization: userToken,
-        },
-      }
-    );
-    return response.data.data;
-  } catch (error) {
-    return [];
-  }
+  const response = await api.get(
+    '/api/auth/ai/base/all',
+    {
+      headers: {
+        Authorization: userToken,
+      },
+    }
+  );
+  return response.data.data;
 };
 
 
 // 전체 CustomAI 리스트 가져오기
 export const customAIList = async (userToken:string, creator:string, active:string, hidden:string) => {
-  try {
-    const response = await axios.get(
-      url + '/api/auth/ai/custom/all',
-      {
-        headers: {
-          Authorization: userToken,
-        },
-        params: {
-          creator,
-          active,
-          hidden,
-        },
-      }
-    );
-    return response.data.data;
-  } catch (error) {
-    return [];
-  }
+  const response = await api.get(
+    '/api/auth/ai/custom/all',
+    {
+      headers: {
+        Authorization: userToken,
+      },
+      params: {
+        creator,
+        active,
+        hidden,
+      },
+    }
+  );
+  return response.data.data;
 };
 
 
@@ -83,8 +75,8 @@ interface AISubcriptionParams {
   customAiId: string;
 }
 export const AISubcription = async (params: AISubcriptionParams, userToken: string) => {
-  const response = await axios.post<AuthResult>(
-    url + '/api/auth/aisubsciption/subscribe',
+  const response = await api.post<AuthResult>(
+    '/api/auth/aisubsciption/subscribe',
     params,
     {
       headers: {
@@ -98,8 +90,8 @@ export const AISubcription = async (params: AISubcriptionParams, userToken: stri
 
 // YOUF 구독 해지
 export const AIUnSubcription = async (aiSubscriptionId: string, userToken: string) => {
-  const response = await axios.delete<AuthResult>(
-    url + '/api/auth/aisubsciption/delete/' + aiSubscriptionId ,
+  const response = await api.delete<AuthResult>(
+    '/api/auth/aisubsciption/delete/' + aiSubscriptionId ,
     {
       headers: {
         Authorization: userToken,
@@ -112,57 +104,43 @@ export const AIUnSubcription = async (aiSubscriptionId: string, userToken: strin
 
 // 유저 별 구독 내역 가져오기
 export const userAISubscription = async (userId: string, userToken: string) => {
-  try {
-    const response = await axios.get(
-      url + '/api/auth/aisubsciption/relation/' + userId,
-      {
-        headers: {
-          Authorization: userToken,
-        },
-      }
-    );
-    return response.data.data;
-  } catch (error) {
-    return [];
-  }
+  const response = await api.get(
+    '/api/auth/aisubsciption/relation/' + userId,
+    {
+      headers: {
+        Authorization: userToken,
+      },
+    }
+  );
+  return response.data.data;
 };
 
 
 // 유저 별 구독 채팅방 대화 내용 가져오기
 export const userAISubscriptionChat = async (AiId:string, userToken:string) => {
-  try {
-    const response = await axios.get(
-      url + '/api/auth/messages/' + AiId + '/page',
-      {
-        headers: {
-          Authorization: userToken,
-        },
-      }
-    );
-    return response.data.data;
-  } catch (error) {
-    console.log('error: ' + error);
-    return [];
-  }
+  const response = await api.get(
+    '/api/auth/messages/' + AiId + '/page',
+    {
+      headers: {
+        Authorization: userToken,
+      },
+    }
+  );
+  return response.data.data;
 };
 
 
 // 유저 별 구독한 AI 들의 마지막 채팅 가져오기
 export const userAISubscriptionLastChat = async (userId: string, userToken: string) => {
-  try {
-    const response = await axios.get(
-      url + '/api/auth/messages/latest/AI/' + userId,
-      {
-        headers: {
-          Authorization: userToken,
-        },
-      }
-    );
-    return response.data.data;
-  } catch (error) {
-    console.log('error: ' + error);
-    return [];
-  }
+  const response = await api.get(
+    '/api/auth/messages/latest/AI/' + userId,
+    {
+      headers: {
+        Authorization: userToken,
+      },
+    }
+  );
+  return response.data.data;
 };
 
 
@@ -200,21 +178,17 @@ export const createAssistant = async (params: createAssistantParams) => {
     } as any);
   }
 
-  try {
-    const response = await axios.post(
-      url + '/api/auth/ai/custom/create',
-      formData,
-      {
-         headers: {
-          'Authorization': params.userToken,
-          'Content-Type': 'multipart/form-data',
-         },
-      }
-    );
-    return response.data.data;
-  } catch (error: any) {
-    console.log('에러:', error);
-  }
+  const response = await api.post(
+    '/api/auth/ai/custom/create',
+    formData,
+    {
+       headers: {
+        'Authorization': params.userToken,
+        'Content-Type': 'multipart/form-data',
+       },
+    }
+  );
+  return response.data.data;
 };
 
 
@@ -256,40 +230,31 @@ export const updateAssistant = async (params: UpdateAssistantParams) => {
       type: 'image/jpeg',
     } as any);
   }
-  try {
-    const response = await axios.put(
-      url + '/api/auth/ai/custom/update',
-      formData,
-      {
-         headers: {
-          'Authorization': params.userToken,
-          'Content-Type': 'multipart/form-data',
-         },
-      }
-    );
-    return response.data.data;
-  } catch (error: any) {
-    console.log('에러:', error);
-  }
+  const response = await api.put(
+    '/api/auth/ai/custom/update',
+    formData,
+    {
+       headers: {
+        'Authorization': params.userToken,
+        'Content-Type': 'multipart/form-data',
+       },
+    }
+  );
+  return response.data.data;
 };
 
 
 // 유저 별 구독한 AI 들의 스케줄 가져오기
 export const userAISubscriptionScheduler = async (userId: string, userToken: string, aiSubscriptionId: string) => {
-  try {
-    const response = await axios.get(
-      url + '/api/auth/schedule/job?userId=' + userId,
-       {
-        headers: {
-          Authorization: userToken,
-        },
-      }
-    );
-    return response.data.data;
-  } catch (error) {
-    console.log('error: ' + error);
-    return [];
-  }
+  const response = await api.get(
+    '/api/auth/schedule/job?userId=' + userId,
+     {
+      headers: {
+        Authorization: userToken,
+      },
+    }
+  );
+  return response.data.data;
 };
 
 
@@ -325,8 +290,8 @@ export const qurtzSchedule = async (params: qurtzScheduler, userToken: string) =
     // "status":"ENABLED",
     // "userId":"John"
 
-  const response = await axios.post<AuthResult>(
-    url + '/api/auth/schedule/create',
+  const response = await api.post<AuthResult>(
+    '/api/auth/schedule/create',
     params,
     {
       headers: {
