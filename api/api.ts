@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
+import authStorage from '../storages/authStorage';
 
 const baseURL =
   Platform.OS === 'android'
@@ -13,9 +14,16 @@ const api = axios.create({
 
 
 // 요청 인터셉터
-api.interceptors.request.use(request => {
+api.interceptors.request.use(async request => {
+  const auth = await authStorage.get();
+
   console.log('URL:', request.method?.toUpperCase(), request.url);
   console.log('데이터:', request.data);
+
+  if (auth?.accessToken) {
+    request.headers.Authorization = `Bearer ${auth.accessToken}`;
+  }
+
   return request;
 });
 

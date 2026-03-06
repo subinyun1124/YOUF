@@ -19,26 +19,39 @@ const useLogin = () => {
 
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: async (data) => {
-      setUser(data);
-      applyToken(data.jwtToken);
-      authStorage.set(data);
-
+    onSuccess: async (res) => {
+  
+      const loginData = res.data;
+      const auth = {
+        accessToken: loginData.accessToken,
+        userId: loginData.userId,
+      };
+  
+      // AsyncStorage 저장
+      await authStorage.set(auth);
+  
+      // Context 저장
+      setUser(auth);
+  
       try {
-        const subData = await userAISubscription(data.userId, data.jwtToken);
+        const subData = await userAISubscription(loginData.userId);
         setSubscriptions(subData || []);
+  
         if ((subData || []).length > 0) {
           navigation.navigate('Main');
         } else {
           navigation.navigate('Preference');
         }
-
+  
       } catch (error) {
         Alert.alert('구독 정보 불러오기 실패');
       }
     },
-    onError: (error:AuthError) => {
-      const message = error.response?.data?.data?.[0]?.messages[0].message ?? '로그인 실패';
+  
+    onError: (error: AuthError) => {
+      const message =
+        error.response?.data?.data?.[0]?.messages[0].message ?? '로그인 실패';
+  
       inform({
         title: '오류',
         message,

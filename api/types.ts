@@ -28,3 +28,8 @@ export type AuthError = AxiosError<{
   message: AuthErrorData;
   data: AuthErrorData;
 }>;
+
+export interface AuthStorage {
+  accessToken: string;
+  userId: string;
+}

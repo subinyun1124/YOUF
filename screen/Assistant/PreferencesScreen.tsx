@@ -26,16 +26,20 @@ const PreferencesScreen = () => {
   const [user] = useUserState();
   const userId = user?.userId.toString();
   const userToken = user?.jwtToken?.toString() ?? null;
-
+  console.log('userToken', userToken);
+  console.log('userId', userId);
   useEffect(() => {
+    console.log('🔥 PreferencesScreen useEffect 실행');
     if (userToken && userId) {
       const getCustomAIList = async () => {
+        console.log('🔥 customAIList 호출 시작');
         const customAIListdata: AIItem[] = await customAIList(
           userToken,
           '',
           'Y',
           'N',
         );
+        console.log('🔥 받아온 AI 목록:', customAIListdata);
         const data = [...customAIListdata].sort(
           (a, b) => new Date(a.id).getTime() - new Date(b.id).getTime(),
         );
