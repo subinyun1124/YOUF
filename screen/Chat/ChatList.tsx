@@ -24,15 +24,14 @@ interface ChatParams {
 export default function ChatList() {
   const [user] = useUserState();
   const userId = user?.userId?.toString();
-  const userToken = user?.jwtToken?.toString() ?? null;
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [chatRoom, setChatRoom] = useState<ChatParams[]>([]);
 
   useEffect(() => {
-    if (userId && userToken) {
+    if (userId) {
       const getCustomAIList = async () => {
         try {
-          const response = await userAISubscription(userId, userToken);
+          const response = await userAISubscription(userId);
           console.log('AI 목록 원본:', response);
 
           const formattedData: ChatParams[] = response.map((item: any) => {
@@ -55,7 +54,7 @@ export default function ChatList() {
 
       getCustomAIList();
     }
-  }, [userId, userToken]);
+  }, [userId]);
 
   const renderItem = ({item}: {item: ChatParams}) => (
     <TouchableOpacity

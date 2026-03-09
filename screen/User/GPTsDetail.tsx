@@ -28,7 +28,6 @@ type GPTsDetailRouteProp = RouteProp<RootStackParamList, 'GPTsDetail'>;
 const GPTsDetail = () => {
   const [user] = useUserState();
   const userId = user?.userId?.toString();
-  const userToken = user?.jwtToken;
   const userRole = user?.role;
 
   const route = useRoute<GPTsDetailRouteProp>();
@@ -76,7 +75,7 @@ const GPTsDetail = () => {
   };
 
   const handleSave = async () => {
-    if (!(userId && userToken)) {
+    if (!userId) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -89,7 +88,6 @@ const GPTsDetail = () => {
           try {
             await updateAssistant({
               userId,
-              userToken,
               id,
               name,
               description,
@@ -123,7 +121,7 @@ const GPTsDetail = () => {
   };
 
   const handleApprove = () => {
-    if (!(userId && userToken)) {
+    if (!userId) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -136,7 +134,6 @@ const GPTsDetail = () => {
           try {
             await updateAssistant({
               userId,
-              userToken,
               id,
               name,
               description,

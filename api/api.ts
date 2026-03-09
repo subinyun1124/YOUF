@@ -1,48 +1,78 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
-import authStorage from '../storages/authStorage';
+import { authStorage } from '../auth/authStorage';
 
 const baseURL =
   Platform.OS === 'android'
     ? 'http://10.0.2.2:8081'
     : 'http://localhost:8081';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL,
   withCredentials: true,
 });
 
-
-// 요청 인터셉터
-api.interceptors.request.use(async request => {
-  const auth = await authStorage.get();
-
-  console.log('URL:', request.method?.toUpperCase(), request.url);
-  console.log('데이터:', request.data);
-
-  if (auth?.accessToken) {
-    request.headers.Authorization = `Bearer ${auth.accessToken}`;
-  }
-
-  return request;
-});
-
-
-// 응답 인터셉터
-api.interceptors.response.use(
-  response => {
-    console.log('응답:', response.data);
-    return response;
-  },
-  error => {
-    if (error.response) {
-      console.log('에러 응답:', error.response.data);
-      console.log('에러 상태코드:', error.response.status);
-    } else {
-      console.log('네트워크 에러:', error.message);
+/**
+ * 요청 Interceptor
+ */
+api.interceptors.request.use(
+  async (config) => {
+    const auth = await authStorage.get();
+    if (auth?.tokens?.accessToken) {
+      config.headers = config.headers ?? {};
+      config.headers.Authorization = `Bearer ${auth.tokens.accessToken}`;
     }
+
+    console.log(
+      'API REQUEST',
+      config.method?.toUpperCase(),
+      config.url
+    );
+
+    return config;
+  },
+  (error) => {
     return Promise.reject(error);
   }
 );
 
-export default api;
+/**
+ * 응답 Interceptor
+ */
+api.interceptors.response.use(
+  (response) => {
+    console.log(
+      'API RESPONSE',
+      response.config.url,
+      response.data
+    );
+
+    return response;
+  },
+  async (error) => {
+    if (error.response) {
+      const status = error.response.status
+      console.log(
+        'API ERROR',
+        status,
+        error.response.data
+      );
+
+      /**
+       * 인증 만료 처리
+       */
+      if (status === 401) {
+        await authStorage.clear();
+
+        // 필요하면 navigation reset
+        // navigationRef.navigate('Login')
+
+      }
+
+    } else {
+      console.log('네트워크 오류', error.message);
+    }
+
+    return Promise.reject(error);
+  }
+)

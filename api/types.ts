@@ -5,7 +5,17 @@ export interface User {
   email: string;
   role: string;
   loginAt: string;
-  jwtToken: string;
+}
+
+export interface AuthTokens {
+  accessToken: string;
+  // refreshToken: string;
+  // expiresAt: string;
+}
+
+export interface AuthState {
+  user: User
+  tokens: AuthTokens
 }
 
 export interface AuthResult {
@@ -29,7 +39,8 @@ export type AuthError = AxiosError<{
   data: AuthErrorData;
 }>;
 
-export interface AuthStorage {
-  accessToken: string;
-  userId: string;
+// 응답
+export interface LoginResponse {
+  accessToken: string
+  user: User
 }

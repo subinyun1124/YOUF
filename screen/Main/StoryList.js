@@ -8,21 +8,29 @@ const BASE_URL = 'https://cdn.pixabay.com/photo/2025/03/07/13/12/flower-9453063_
 const StoryList = () => {
    const [user] = useUserState();
    const userId = user?.userId?.toString();
-   const userToken = user?.jwtToken?.toString() ?? null;
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true); // 로딩 상태
 
   useEffect(() => {
-    const getSubscriptions = async () => {
-      setLoading(true);
-      const data = await userAISubscription(userId, userToken);
-      console.log('story : ', data );
-      setSubscriptions(data || []);
-      setLoading(false);
-    };
+    if(userId) {
+      getSubscriptions(userId);
+    }
+  }, [userId]);
 
-    getSubscriptions();
-  }, [userId, userToken]);
+  const getSubscriptions = async (userid: string) => {
+    try{
+      setLoading(true);
+
+      const data = await userAISubscription(userid);
+      console.log('story : ', data );
+
+      setSubscriptions(data || []);
+    } catch(e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.container}>

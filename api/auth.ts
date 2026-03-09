@@ -1,6 +1,6 @@
 import { AuthResult } from './types';
 import { Platform } from 'react-native';
-import api from './api';
+import {api} from './api';
 
 const url =
   Platform.OS === 'android'
@@ -37,27 +37,17 @@ export const login = async (params: loginParams) => {
 
 
 // 전체 BaseAI 리스트 가져오기
-export const baseAIList = async (userToken:string) => {
-  const response = await api.get(
-    '/api/auth/ai/base/all',
-    {
-      headers: {
-        Authorization: userToken,
-      },
-    }
-  );
+export const baseAIList = async () => {
+  const response = await api.get('/api/auth/ai/base/all');
   return response.data.data;
 };
 
 
 // 전체 CustomAI 리스트 가져오기
-export const customAIList = async (userToken:string, creator:string, active:string, hidden:string) => {
+export const customAIList = async (creator:string, active:string, hidden:string) => {
   const response = await api.get(
     '/api/auth/ai/custom/all',
     {
-      headers: {
-        Authorization: userToken,
-      },
       params: {
         creator,
         active,
@@ -74,71 +64,44 @@ interface AISubcriptionParams {
   userId: string;
   customAiId: string;
 }
-export const AISubcription = async (params: AISubcriptionParams, userToken: string) => {
+export const AISubcription = async (params: AISubcriptionParams) => {
   const response = await api.post<AuthResult>(
     '/api/auth/aisubsciption/subscribe',
-    params,
-    {
-      headers: {
-        Authorization: userToken,
-      },
-    }
+    params
   );
   return response.data;
 };
 
 
 // YOUF 구독 해지
-export const AIUnSubcription = async (aiSubscriptionId: string, userToken: string) => {
-  const response = await api.delete<AuthResult>(
-    '/api/auth/aisubsciption/delete/' + aiSubscriptionId ,
-    {
-      headers: {
-        Authorization: userToken,
-      },
-    }
-  );
+export const AIUnSubcription = async (aiSubscriptionId: string) => {
+  const response = await api.delete<AuthResult>('/api/auth/aisubsciption/delete/' + aiSubscriptionId);
   return response.data;
 };
 
 
 // 유저 별 구독 내역 가져오기
-export const userAISubscription = async (userId: string, userToken: string) => {
+export const userAISubscription = async (userId: string) => {
   const response = await api.get(
-    '/api/auth/aisubsciption/relation/' + userId,
-    {
-      headers: {
-        Authorization: userToken,
-      },
-    }
+    '/api/auth/aisubsciption/relation/' + userId
   );
   return response.data.data;
 };
 
 
 // 유저 별 구독 채팅방 대화 내용 가져오기
-export const userAISubscriptionChat = async (AiId:string, userToken:string) => {
+export const userAISubscriptionChat = async (AiId:string) => {
   const response = await api.get(
-    '/api/auth/messages/' + AiId + '/page',
-    {
-      headers: {
-        Authorization: userToken,
-      },
-    }
+    '/api/auth/messages/' + AiId + '/page'
   );
   return response.data.data;
 };
 
 
 // 유저 별 구독한 AI 들의 마지막 채팅 가져오기
-export const userAISubscriptionLastChat = async (userId: string, userToken: string) => {
+export const userAISubscriptionLastChat = async (userId: string) => {
   const response = await api.get(
-    '/api/auth/messages/latest/AI/' + userId,
-    {
-      headers: {
-        Authorization: userToken,
-      },
-    }
+    '/api/auth/messages/latest/AI/' + userId
   );
   return response.data.data;
 };
@@ -147,7 +110,7 @@ export const userAISubscriptionLastChat = async (userId: string, userToken: stri
 // YOUF 생성
 interface createAssistantParams {
   userId: string;
-  userToken: string;
+  // userToken: string;
   name: string;
   description: string;
   baseAiId: string;
@@ -183,7 +146,7 @@ export const createAssistant = async (params: createAssistantParams) => {
     formData,
     {
        headers: {
-        'Authorization': params.userToken,
+        // 'Authorization': params.userToken,
         'Content-Type': 'multipart/form-data',
        },
     }
@@ -195,7 +158,6 @@ export const createAssistant = async (params: createAssistantParams) => {
 // YOUF 상세정보 수정
 interface UpdateAssistantParams {
   userId: string;
-  userToken: string;
   id: string;
   name: string;
   description: string;
@@ -235,7 +197,6 @@ export const updateAssistant = async (params: UpdateAssistantParams) => {
     formData,
     {
        headers: {
-        'Authorization': params.userToken,
         'Content-Type': 'multipart/form-data',
        },
     }
@@ -245,14 +206,9 @@ export const updateAssistant = async (params: UpdateAssistantParams) => {
 
 
 // 유저 별 구독한 AI 들의 스케줄 가져오기
-export const userAISubscriptionScheduler = async (userId: string, userToken: string, aiSubscriptionId: string) => {
+export const userAISubscriptionScheduler = async (userId: string, aiSubscriptionId: string) => {
   const response = await api.get(
-    '/api/auth/schedule/job?userId=' + userId,
-     {
-      headers: {
-        Authorization: userToken,
-      },
-    }
+    '/api/auth/schedule/job?userId=' + userId
   );
   return response.data.data;
 };
@@ -274,7 +230,7 @@ interface qurtzScheduler {
   status: string,
   userId: string
 }
-export const qurtzSchedule = async (params: qurtzScheduler, userToken: string) => {
+export const qurtzSchedule = async (params: qurtzScheduler) => {
   
     // "jobName": "America Stock Expert(테슬라)1",
     // "jobGroup":"SendMessageAI",
@@ -292,12 +248,7 @@ export const qurtzSchedule = async (params: qurtzScheduler, userToken: string) =
 
   const response = await api.post<AuthResult>(
     '/api/auth/schedule/create',
-    params,
-    {
-      headers: {
-        Authorization: userToken,
-      },
-    }
+    params
   );
   return response.data.data;
 };

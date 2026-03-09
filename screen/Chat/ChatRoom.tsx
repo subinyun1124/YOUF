@@ -32,7 +32,7 @@ interface MessagesType {
   type: string;
 }
 
-// const SOCKET_URL = 'http://3.36.247.178:8081/chat';
+// const SOCKET_URL = 'http://:8081/chat';
 const PUB_ENDPOINT = '/app/chat.sendMessage/';
 const SUB_ENDPOINT = '/topic/public/';
 
@@ -41,7 +41,6 @@ const ChatRoom = () => {
   const {subscriptionId, YOUFName, YOUFImage} = route.params;
   const [user] = useUserState();
   const userId = user?.userId?.toString();
-  const userToken = user?.jwtToken?.toString() ?? null;
 
   const [isConnected, setIsConnected] = useState(false);
   const [connectionMessage, setConnectionMessage] =
@@ -154,13 +153,10 @@ const ChatRoom = () => {
   }, [userId]);
 
   useEffect(() => {
-    if (userToken) {
+    if (subscriptionId) {
       const loadChatHistory = async () => {
         setLoading(true);
-        const response = await userAISubscriptionChat(
-          subscriptionId,
-          userToken,
-        );
+        const response = await userAISubscriptionChat(subscriptionId);
 
         if (Array.isArray(response?.content)) {
           const chatData = response.content.map((msg: any) => ({
@@ -180,7 +176,7 @@ const ChatRoom = () => {
       };
       loadChatHistory();
     }
-  }, [subscriptionId, YOUFName, userToken]);
+  }, [subscriptionId, YOUFName]);
 
   useEffect(() => {
     if (!isInitialLoad && !isUserScrolling) {

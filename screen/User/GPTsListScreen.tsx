@@ -17,28 +17,22 @@ import {RootStackParamList, GPTsParams} from '../type';
 const GPTsListScreen = () => {
   const [user] = useUserState();
   const userId = user?.userId;
-  const userToken = user?.jwtToken?.toString();
   const userRole = user?.role;
   const [GPTsDetail, setGPTsDetail] = useState<GPTsParams[]>([]);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (userToken && userId && isFocused) {
+    if (userId && isFocused) {
       const fetchData = async () => {
         let customAiListData: GPTsParams[] = [];
         let filteredData: GPTsParams[] = [];
         let data: GPTsParams[] = [];
         try {
           if (userRole === 'ADMIN') {
-            filteredData = await customAIList(userToken, '', 'Y', '');
+            filteredData = await customAIList('', 'Y', '');
           } else {
-            customAiListData = await customAIList(
-              userToken,
-              userId.toString(),
-              'Y',
-              '',
-            );
+            customAiListData = await customAIList(userId.toString(), 'Y', '');
             filteredData = customAiListData.filter(
               (item: GPTsParams) => item.createByUsrId.toString() === userId,
             );
@@ -56,7 +50,7 @@ const GPTsListScreen = () => {
       };
       fetchData();
     }
-  }, [userToken, userId, userRole, isFocused]);
+  }, [userId, userRole, isFocused]);
 
   const renderItem = ({item}: {item: GPTsParams}) => (
     <TouchableOpacity

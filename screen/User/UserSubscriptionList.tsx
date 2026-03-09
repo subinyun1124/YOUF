@@ -44,7 +44,6 @@ type GPTsWithQuartz = GPTsParams & {
 const UserSubscriptionList = () => {
   const [user] = useUserState();
   const userId = user?.userId;
-  const userToken = user?.jwtToken?.toString() ?? null;
 
   const [GPTsDetail, setGPTsDetail] = useState<GPTsWithQuartz[]>([]);
   const [subscriptionVersion, setSubscriptionVersion] = useState(0);
@@ -57,9 +56,9 @@ const UserSubscriptionList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (userId && userToken) {
+      if (userId) {
         try {
-          const subscriptionList = await userAISubscription(userId, userToken);
+          const subscriptionList = await userAISubscription(userId);
           console.log('UserAISubscription: ', subscriptionList);
           const enrichedList: GPTsWithQuartz[] = await Promise.all(
             subscriptionList.map(async (item: any) => {
@@ -69,7 +68,6 @@ const UserSubscriptionList = () => {
               try {
                 const schedulerList = await userAISubscriptionScheduler(
                   userId,
-                  userToken,
                   aiSubscriptionId,
                 );
 
@@ -113,7 +111,7 @@ const UserSubscriptionList = () => {
     };
 
     fetchData();
-  }, [userId, userToken, subscriptionVersion]);
+  }, [userId, subscriptionVersion]);
 
   const handleCancelSubscription = async (aiSubscriptionId: string) => {
     Alert.alert('구독 해지', '정말로 구독을 해지하시겠습니까?', [
@@ -122,7 +120,7 @@ const UserSubscriptionList = () => {
         text: '네',
         onPress: async () => {
           try {
-            await AIUnSubcription(aiSubscriptionId, userToken!);
+            await AIUnSubcription(aiSubscriptionId);
             Alert.alert('완료', '구독이 해지되었습니다.');
             setSubscriptionVersion(prev => prev + 1);
           } catch (error) {
@@ -175,7 +173,7 @@ const UserSubscriptionList = () => {
   };
 
   const handleConfirmTimer = (time: string, days: string[]) => {
-    if (!(userId && userToken)) {
+    if (!userId) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -184,18 +182,17 @@ const UserSubscriptionList = () => {
       {
         text: '네',
         onPress: async () => {
-          try {
-            await qurtzSchedule({
-              name,
-              userId,
-              userToken,
-            });
-            Alert.alert('완료', '선호 AI가 저장되었습니다.');
-            navigation.navigate('GPTsList');
-          } catch (error) {
-            console.error('Assistant 생성 오류:', error);
-            Alert.alert('오류', '저장 중 문제가 발생했습니다.');
-          }
+          // try {
+          //   await qurtzSchedule({
+          //     name,
+          //     userId,
+          //   });
+          //   Alert.alert('완료', '선호 AI가 저장되었습니다.');
+          //   navigation.navigate('GPTsList');
+          // } catch (error) {
+          //   console.error('Assistant 생성 오류:', error);
+          //   Alert.alert('오류', '저장 중 문제가 발생했습니다.');
+          // }
         },
       },
     ]);

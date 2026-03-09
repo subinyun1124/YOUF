@@ -28,7 +28,6 @@ interface BaseAIItem {
 const CreateAssistantScreen = () => {
   const [user] = useUserState();
   const userId = user?.userId.toString();
-  const userToken = user?.jwtToken?.toString() ?? null;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [baseAiId, setBaseAiId] = useState<string>('');
@@ -38,16 +37,18 @@ const CreateAssistantScreen = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
-    if (userToken) {
-      const getBaseAIList = async () => {
-        const data: BaseAIItem[] = await baseAIList(userToken);
+    const getBaseAIList = async () => {
+      try {
+        const data: BaseAIItem[] = await baseAIList();
         console.log('Base AI 목록:', data);
         setBaseAIList(data || []);
-      };
+      } catch (error) {
+        console.error('Base AI 목록 로딩 실패:', error);
+      }
+    };
 
-      getBaseAIList();
-    }
-  }, [userToken]);
+    getBaseAIList();
+  }, []);
 
   const pickImage = () => {
     launchImageLibrary(
@@ -70,7 +71,7 @@ const CreateAssistantScreen = () => {
   };
 
   const handleSave = async () => {
-    if (!(userId && userToken)) {
+    if (!userId) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -83,7 +84,6 @@ const CreateAssistantScreen = () => {
           try {
             await createAssistant({
               userId,
-              userToken,
               name,
               description,
               baseAiId,

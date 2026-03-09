@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState, useEffect} from 'react';
 import {View, Text, TextInput, Button, Alert} from 'react-native';
-import {AuthContext} from './context/AuthContext';
+import {AuthContext} from './auth/AuthContext';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const Login = ({setIsLoggedIn, navigation}: any) => {
