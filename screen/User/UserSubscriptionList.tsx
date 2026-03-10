@@ -15,7 +15,7 @@ import {
   qurtzSchedule,
   userAISubscription,
   userAISubscriptionScheduler,
-} from '../../api/auth';
+} from '../../api/authAPI';
 import {useUserState} from '../../contexts/UserContext';
 import Scheduler from './Scheduler';
 

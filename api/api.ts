@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
-import { authStorage } from '../auth/authStorage';
+import { authStorage } from '../auth/AuthStorage';
 
 const baseURL =
   Platform.OS === 'android'

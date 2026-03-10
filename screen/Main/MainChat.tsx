@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import {userAISubscriptionLastChat} from '../../api/auth';
+import {userAISubscriptionLastChat} from '../../api/authAPI';
 import {useUserState} from '../../contexts/UserContext';
 
 interface ChatMessage {

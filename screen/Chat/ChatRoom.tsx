@@ -12,7 +12,7 @@ import {Client, IFrame, IMessage} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
-import {userAISubscriptionChat} from '../../api/auth';
+import {userAISubscriptionChat} from '../../api/authAPI';
 import {useRoute, RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../type';
 import CustomHeader from '../CustomHeader';

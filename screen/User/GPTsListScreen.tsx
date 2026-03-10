@@ -7,7 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import {customAIList} from '../../api/auth';
+import {customAIList} from '../../api/authAPI';
 import {useUserState} from '../../contexts/UserContext';
 import {useIsFocused} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';

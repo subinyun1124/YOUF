@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Picker} from '@react-native-picker/picker';
-import {baseAIList, createAssistant} from '../../api/auth';
+import {baseAIList, createAssistant} from '../../api/authAPI';
 import {useUserState} from '../../contexts/UserContext';
 import {RootStackParamList} from '../type';
 import {StackNavigationProp} from '@react-navigation/stack';

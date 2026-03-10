@@ -1,20 +1,20 @@
-import {useEffect} from 'react';
-import {authStorage} from '../auth/authStorage';
-import {useAuth} from '../auth/AuthContext';
+import {useEffect, useState} from 'react';
+import {authStorage} from './AuthStorage';
+import {useAuth} from './AuthContext';
 
 export const useAuthLoad = () => {
-  const {setAuth} = useAuth();
+  const {setAuth, setLoading} = useAuth();
 
   useEffect(() => {
     const load = async () => {
       const saved = await authStorage.get();
 
-      if (!saved) return;
-      if (!saved.user || !saved.tokens) return;
-
-      setAuth(saved.user, saved.tokens);
+      if (saved?.user && saved?.tokens) {
+        setAuth(saved.user, saved.tokens);
+      }
+      setLoading(false);
     };
 
     load();
-  }, [setAuth]);
+  }, [setAuth, setLoading]);
 };

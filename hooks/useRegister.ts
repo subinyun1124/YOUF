@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { register } from '../api/auth';
+import { register } from '../api/authAPI';
 import useInform from './useInform';
 import { Alert } from 'react-native';
 

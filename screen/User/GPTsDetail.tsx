@@ -13,7 +13,7 @@ import {
   Button,
   ToastAndroid,
 } from 'react-native';
-import {updateAssistant} from '../../api/auth';
+import {updateAssistant} from '../../api/authAPI';
 import {useUserState} from '../../contexts/UserContext';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../type';

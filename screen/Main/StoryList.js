@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Image, Text, ActivityIndicator } from 'react-native';
-import { userAISubscription } from '../../api/auth';
+import { userAISubscription } from '../../api/authAPI';
 import { useUserState } from '../../contexts/UserContext';
 
 const BASE_URL = 'https://cdn.pixabay.com/photo/2025/03/07/13/12/flower-9453063_1280.jpg';

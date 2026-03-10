@@ -1,32 +1,33 @@
 import {createContext, useContext, useState} from 'react';
 import {User, AuthState} from '../api/types';
+import {authStorage} from './AuthStorage';
 
 interface AuthContextType {
   user: User | null;
-
   tokens: AuthState['tokens'] | null;
+  loading: boolean;
 
   setAuth: (user: User, tokens: AuthState['tokens']) => void;
-
   logout: () => void;
+  setLoading: (loading: boolean) => void;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({children}: {children: React.ReactNode}) {
   const [user, setUser] = useState<User | null>(null);
-
   const [tokens, setTokens] = useState<AuthState['tokens'] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const setAuth = (user: User, tokens: AuthState['tokens']) => {
     setUser(user);
-
     setTokens(tokens);
+    setLoading(false);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await authStorage.clear();
     setUser(null);
-
     setTokens(null);
   };
 
@@ -35,8 +36,10 @@ export function AuthProvider({children}: {children: React.ReactNode}) {
       value={{
         user,
         tokens,
+        loading,
         setAuth,
         logout,
+        setLoading,
       }}>
       {children}
     </AuthContext.Provider>

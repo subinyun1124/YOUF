@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { userAISubscription, login } from '../api/auth';
+import { userAISubscription, login } from '../api/authAPI';
 import { useAuth } from '../auth/AuthContext';
-import { authStorage } from '../auth/authStorage';
+import { authStorage } from '../auth/AuthStorage';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../screen/type';
 import { StackNavigationProp } from '@react-navigation/stack';
