@@ -17,12 +17,14 @@ const useLogin = () => {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: async (data) => {
-
+      console.log(data);
       const auth = {
-        user: data.user,
+        user: {
+          id: data.userId,
+        },
         tokens: {
-          accessToken: data.accessToken
-        }
+          accessToken: data.accessToken,
+        },
       };
 
       // storage 저장
@@ -42,10 +44,9 @@ const useLogin = () => {
           navigation.navigate('Preference');
         }
 
-      } catch {
-
+      } catch(e) {
+        console.log('구독 정보 에러', e);
         Alert.alert('구독 정보 불러오기 실패');
-
       }
     }
   });

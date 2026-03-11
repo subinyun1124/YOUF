@@ -29,7 +29,7 @@ interface loginParams {
 }
 export const login = async (params: loginParams) => {
   const response = await api.post<AuthResult>(
-    '/api/login',
+    '/api/auth/login',
     params,
   );
   return response.data.data;
