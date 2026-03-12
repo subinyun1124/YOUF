@@ -27,6 +27,7 @@ interface BaseAIItem {
 
 const CreateAssistantScreen = () => {
   const {user} = useAuth();
+  console.log('user: ', user);
   const userId = user?.userId;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
