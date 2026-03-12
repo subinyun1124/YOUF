@@ -16,7 +16,7 @@ import {userAISubscriptionChat} from '../../api/authAPI';
 import {useRoute, RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../type';
 import CustomHeader from '../CustomHeader';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 
 const SOCKET_URL =
   Platform.OS === 'android'
@@ -39,8 +39,8 @@ const SUB_ENDPOINT = '/topic/public/';
 const ChatRoom = () => {
   const route = useRoute<ChatRoomRouteProp>();
   const {subscriptionId, YOUFName, YOUFImage} = route.params;
-  const [user] = useUserState();
-  const userId = user?.userId?.toString();
+  const {user} = useAuth();
+  const userId = user?.userId;
 
   const [isConnected, setIsConnected] = useState(false);
   const [connectionMessage, setConnectionMessage] =

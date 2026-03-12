@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import {customAIList, AISubcription} from '../../api/authAPI';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '.././type';
@@ -23,8 +23,8 @@ const PreferencesScreen = () => {
   const [selectedPreferences, setSelectedPreferences] = useState<string[]>([]);
   const [list, setList] = useState<AIItem[]>([]);
 
-  const [user] = useUserState();
-  const userId = user?.userId.toString();
+  const {user} = useAuth();
+  const userId = user?.userId;
   console.log('userId', userId);
   useEffect(() => {
     console.log('PreferencesScreen useEffect 실행');

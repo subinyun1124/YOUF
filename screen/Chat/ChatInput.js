@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 
 const ChatInput = ({ onSend, disabled }) => {
-  const [user] = useUserState();
+  const {user} = useAuth();
   const userId = user?.userId;
   const [message, setMessage] = useState('');
 

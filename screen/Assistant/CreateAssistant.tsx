@@ -15,7 +15,7 @@ import {
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Picker} from '@react-native-picker/picker';
 import {baseAIList, createAssistant} from '../../api/authAPI';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 import {RootStackParamList} from '../type';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
@@ -26,8 +26,8 @@ interface BaseAIItem {
 }
 
 const CreateAssistantScreen = () => {
-  const [user] = useUserState();
-  const userId = user?.userId.toString();
+  const {user} = useAuth();
+  const userId = user?.userId;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [baseAiId, setBaseAiId] = useState<string>('');

@@ -14,7 +14,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import {updateAssistant} from '../../api/authAPI';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../type';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -26,8 +26,8 @@ const BASE_Photo =
 type GPTsDetailRouteProp = RouteProp<RootStackParamList, 'GPTsDetail'>;
 
 const GPTsDetail = () => {
-  const [user] = useUserState();
-  const userId = user?.userId?.toString();
+  const {user} = useAuth();
+  const userId = user?.userId;
   const userRole = user?.role;
 
   const route = useRoute<GPTsDetailRouteProp>();

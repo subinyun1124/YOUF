@@ -17,26 +17,27 @@ const useLogin = () => {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: async (data) => {
-      console.log(data);
+      console.log(data)
       const auth = {
         user: {
-          id: data.userId,
+          userId: data.userId,
+          email: data.email,
+          role: data.role,
+          loginAt: data.loginAt,
         },
         tokens: {
-          accessToken: data.accessToken,
+          accessToken: data.jwtToken,
         },
       };
 
-      // storage 저장
       await authStorage.set(auth);
 
-      // context 저장
       setAuth(auth.user, auth.tokens);
 
       try {
 
         const subData =
-          await userAISubscription(data.user.id);
+          await userAISubscription(data.userId);
 
         if ((subData || []).length > 0) {
           navigation.navigate('Main');

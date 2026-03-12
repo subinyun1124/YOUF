@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import {userAISubscriptionLastChat} from '../../api/authAPI';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 
 interface ChatMessage {
   id: string;
@@ -18,26 +18,30 @@ interface ChatMessage {
 }
 
 const MainChat = () => {
-  const [user] = useUserState();
+  const {user} = useAuth();
   const userId = user?.userId?.toString();
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (userId) {
-      const fetchMessages = async () => {
-        try {
-          const data = await userAISubscriptionLastChat(userId);
-          console.log('받아온 데이터: ', data);
-          setMessages(data);
-        } catch (error) {
-          console.error('채팅 데이터를 가져오는 중 오류 발생:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchMessages();
-    }
+    if (!userId) return;
+
+    const fetchMessages = async () => {
+      setLoading(true);
+
+      try {
+        const data = await userAISubscriptionLastChat(userId);
+        console.log('받아온 데이터: ', data);
+        setMessages(data);
+      } catch (error) {
+        console.error('채팅 데이터를 가져오는 중 오류 발생:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessages();
   }, [userId]);
 
   return (

@@ -11,7 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../type';
 import {userAISubscription} from '../../api/authAPI';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 
 interface ChatParams {
   id: string;
@@ -22,38 +22,36 @@ interface ChatParams {
 }
 
 export default function ChatList() {
-  const [user] = useUserState();
-  const userId = user?.userId?.toString();
+  const {user} = useAuth();
+  const userId = user?.userId;
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [chatRoom, setChatRoom] = useState<ChatParams[]>([]);
 
   useEffect(() => {
-    if (userId) {
-      const getCustomAIList = async () => {
-        try {
-          const response = await userAISubscription(userId);
-          console.log('AI 목록 원본:', response);
+    if (!userId) return;
+    const getCustomAIList = async () => {
+      try {
+        const response = await userAISubscription(userId);
+        console.log('AI 목록 원본:', response);
 
-          const formattedData: ChatParams[] = response.map((item: any) => {
-            const ai = item.customAIRespDto;
+        const formattedData: ChatParams[] = response.map((item: any) => {
+          const ai = item.customAIRespDto;
 
-            return {
-              id: item.id,
-              name: ai.name,
-              time: new Date(item.createdAt),
-              imageUrl: ai.imageUrl,
-              message: '',
-            };
-          });
+          return {
+            id: item.id,
+            name: ai.name,
+            time: new Date(item.createdAt),
+            imageUrl: ai.imageUrl,
+            message: '',
+          };
+        });
 
-          setChatRoom(formattedData);
-        } catch (error) {
-          console.error('데이터 가져오기 실패:', error);
-        }
-      };
-
-      getCustomAIList();
-    }
+        setChatRoom(formattedData);
+      } catch (error) {
+        console.error('데이터 가져오기 실패:', error);
+      }
+    };
+    getCustomAIList();
   }, [userId]);
 
   const renderItem = ({item}: {item: ChatParams}) => (

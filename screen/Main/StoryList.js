@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Image, Text, ActivityIndicator } from 'react-native';
 import { userAISubscription } from '../../api/authAPI';
-import { useUserState } from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 
 const BASE_URL = 'https://cdn.pixabay.com/photo/2025/03/07/13/12/flower-9453063_1280.jpg';
 
 const StoryList = () => {
-   const [user] = useUserState();
-   const userId = user?.userId?.toString();
+   const {user} = useAuth();
+   const userId = user?.userId;
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true); // 로딩 상태
 

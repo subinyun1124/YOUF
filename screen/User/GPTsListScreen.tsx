@@ -8,14 +8,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {customAIList} from '../../api/authAPI';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 import {useIsFocused} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList, GPTsParams} from '../type';
 
 const GPTsListScreen = () => {
-  const [user] = useUserState();
+  const {user} = useAuth();
   const userId = user?.userId;
   const userRole = user?.role;
   const [GPTsDetail, setGPTsDetail] = useState<GPTsParams[]>([]);

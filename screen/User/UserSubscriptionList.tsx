@@ -16,7 +16,7 @@ import {
   userAISubscription,
   userAISubscriptionScheduler,
 } from '../../api/authAPI';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 import Scheduler from './Scheduler';
 
 type JobData = {
@@ -42,7 +42,7 @@ type GPTsWithQuartz = GPTsParams & {
 };
 
 const UserSubscriptionList = () => {
-  const [user] = useUserState();
+  const {user} = useAuth();
   const userId = user?.userId;
 
   const [GPTsDetail, setGPTsDetail] = useState<GPTsWithQuartz[]>([]);

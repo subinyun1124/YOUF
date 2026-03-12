@@ -13,7 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import {RootStackParamList, GPTsParams} from '../type';
-import {useUserState} from '../../contexts/UserContext';
+import {useAuth} from '../../auth/AuthContext';
 import {AISubcription, customAIList} from '../../api/authAPI';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -25,8 +25,8 @@ const CARD_MARGIN = 20;
 const CARD_WIDTH = width - CARD_MARGIN * 2;
 
 const AssistantSubscriptionScreen = () => {
-  const [user] = useUserState();
-  const userId = user?.userId ?? null;
+  const {user} = useAuth();
+  const userId = user?.userId;
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const [GPTsDetail, setGPTsDetail] = useState<GPTsParams[]>([]);

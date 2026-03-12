@@ -3,9 +3,11 @@ import {authStorage} from './AuthStorage';
 import {useAuth} from './AuthContext';
 
 export const useAuthLoad = () => {
-  const {setAuth, setLoading} = useAuth();
+  const {setAuth, loading, setLoading} = useAuth();
 
   useEffect(() => {
+    if (!loading) return;
+
     const load = async () => {
       const saved = await authStorage.get();
 
@@ -16,5 +18,5 @@ export const useAuthLoad = () => {
     };
 
     load();
-  }, [setAuth, setLoading]);
+  }, [setAuth, loading, setLoading]);
 };
