@@ -36,6 +36,13 @@ export const login = async (params: loginParams) => {
 };
 
 
+// 아이디 중복 체크
+export const checkUserId = async (userId:string) => {
+  const response = await api.get('/api/auth/check' + userId);
+  return response.data.data;
+};
+
+
 // 전체 BaseAI 리스트 가져오기
 export const baseAIList = async () => {
   const response = await api.get('/api/auth/ai/base/all');
@@ -66,7 +73,7 @@ interface AISubcriptionParams {
 }
 export const AISubcription = async (params: AISubcriptionParams) => {
   const response = await api.post<AuthResult>(
-    '/api/auth/aisubsciption/subscribe',
+    '/api/auth/aisubscription/subscribe',
     params
   );
   return response.data;
@@ -75,7 +82,7 @@ export const AISubcription = async (params: AISubcriptionParams) => {
 
 // YOUF 구독 해지
 export const AIUnSubcription = async (aiSubscriptionId: string) => {
-  const response = await api.delete<AuthResult>('/api/auth/aisubsciption/delete/' + aiSubscriptionId);
+  const response = await api.delete<AuthResult>('/api/auth/aisubscription/delete/' + aiSubscriptionId);
   return response.data;
 };
 
@@ -83,7 +90,7 @@ export const AIUnSubcription = async (aiSubscriptionId: string) => {
 // 유저 별 구독 내역 가져오기
 export const userAISubscription = async (userId: string) => {
   const response = await api.get(
-    '/api/auth/aisubsciption/relation/' + userId
+    '/api/auth/aisubscription/relation/' + userId
   );
   return response.data.data;
 };

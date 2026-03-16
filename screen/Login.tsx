@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import useLogin from '../hooks/useLogin';
 import useRegister from '../hooks/useRegister';
@@ -18,6 +19,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
+import {checkUserId} from '../api/authAPI';
 
 GoogleSignin.configure({
   webClientId:
@@ -27,6 +29,7 @@ GoogleSignin.configure({
 });
 
 function Login() {
+  // 입력폼
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,14 +37,25 @@ function Login() {
 
   const [isRegister, setIsRegister] = useState(false);
 
+  const clearInputs = () => {
+    setEmail('');
+    setPassword('');
+    setUserId('');
+    setUsername('');
+    setIsRegister(false);
+  };
+
   const {mutate: locallogin, isPending: loginLoading} = useLogin();
-  const {mutate: localregister, isPending: registerLoading} = useRegister();
+  const {mutate: localregister, isPending: registerLoading} =
+    useRegister(clearInputs);
+
   const isLoading = loginLoading || registerLoading;
 
   const handleClickCreate = () => {
     setIsRegister((click: boolean) => !click);
   };
 
+  // 카카오 회원가입
   const signInWithKakao = async (): Promise<void> => {
     try {
       const token = await login();
@@ -51,6 +65,7 @@ function Login() {
     }
   };
 
+  // 구글 회원가입
   const signInWithGoogle = async () => {
     try {
       const userInfo = await GoogleSignin.signIn();
@@ -71,24 +86,99 @@ function Login() {
     }
   };
 
-  const onPress = () => {
-    if (isLoading) {
+  // ID 중복 체크 버튼 추가
+  const [idCheck, setIdCheck] = useState(false);
+  const checkId = async () => {
+    if (!userId) {
+      Alert.alert('아이디를 입력해주세요');
       return;
     }
 
+    if (userId.length < 4) {
+      Alert.alert('아이디는 4자 이상 입력해주세요');
+      return;
+    }
+
+    try {
+      const data = await checkUserId(userId);
+      if (data.data === true) {
+        Alert.alert('사용 가능한 아이디입니다');
+        setIdCheck(true);
+      } else {
+        Alert.alert('이미 존재하는 아이디입니다');
+        setIdCheck(false);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 회원가입 시 검증 규칙
+  const validateRegister = () => {
+    if (!userId) {
+      Alert.alert('아이디를 입력해주세요');
+      return false;
+    }
+
+    if (!username) {
+      Alert.alert('이름을 입력해주세요');
+      return false;
+    }
+
+    if (!email) {
+      Alert.alert('이메일을 입력해주세요');
+      return false;
+    }
+
+    if (!password) {
+      Alert.alert('패스워드를 입력해주세요');
+      return false;
+    }
+
+    if (userId.length < 4) {
+      Alert.alert('아이디는 4자 이상 입력해주세요');
+      return false;
+    }
+
+    if (password.length < 4) {
+      Alert.alert('패스워드는 4자 이상 입력해주세요');
+      return false;
+    }
+
+    // 이메일 정규식 검증
+    const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert('올바른 이메일 형식이 아닙니다');
+      return false;
+    }
+
+    return true;
+  };
+
+  const onPress = () => {
+    if (isLoading) return;
+
     if (isRegister) {
+      if (!idCheck) {
+        Alert.alert('아이디 중복 확인을 해주세요');
+        return;
+      }
+
+      // 유효성 검증
+      if (!validateRegister()) return;
+
       localregister({
         userId,
         username,
         email,
         password,
       });
-      setEmail('');
-      setPassword('');
-      setUserId('');
-      setUsername('');
-      setIsRegister(false);
     } else {
+      if (!userId || !password) {
+        Alert.alert('아이디와 비밀번호를 입력해주세요');
+        return;
+      }
+
       locallogin({
         userId,
         password,
@@ -119,7 +209,7 @@ function Login() {
             />
             <TextInput
               style={styles.input}
-              placeholder="풀네임"
+              placeholder="이름"
               placeholderTextColor="#999"
               value={username}
               onChangeText={setUsername}
@@ -132,9 +222,20 @@ function Login() {
           placeholder="ID"
           placeholderTextColor="#999"
           value={userId}
-          onChangeText={setUserId}
+          onChangeText={text => {
+            setUserId(text);
+            setIdCheck(false);
+          }}
           autoCapitalize="none"
         />
+        {idCheck && (
+          <Text style={{color: 'green', marginBottom: 10}}>
+            사용 가능한 아이디입니다
+          </Text>
+        )}
+        <TouchableOpacity style={styles.submit} onPress={checkId}>
+          <Text style={styles.submitText}>아이디 중복 확인</Text>
+        </TouchableOpacity>
         <TextInput
           style={styles.input}
           placeholder="패스워드"

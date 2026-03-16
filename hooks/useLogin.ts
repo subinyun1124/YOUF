@@ -17,7 +17,7 @@ const useLogin = () => {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: async (data) => {
-      console.log(data)
+      console.log(data);
       const auth = {
         user: {
           userId: data.userId,
