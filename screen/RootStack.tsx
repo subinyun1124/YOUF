@@ -7,7 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {AuthProvider, useAuth} from '../auth/AuthContext';
 import AuthLoader from '../auth/AuthLoader';
 
-import LoginScreen from './Login';
+import LoginScreen from './LoginScreen';
 import MainScreen from './MainTab';
 import PreferenceScreen from './Assistant/PreferencesScreen';
 import ChatScreen from './Chat/ChatRoom';
