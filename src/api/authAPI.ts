@@ -1,12 +1,5 @@
 import { AuthResult } from './types';
-import { Platform } from 'react-native';
 import {api} from './api';
-
-const url =
-  Platform.OS === 'android'
-    ? 'http://10.0.2.2:8081'
-    : 'http://localhost:8081';
-// const url = 'http://3.36.247.178:8081';
 
 interface registerParams {
   userId: string;

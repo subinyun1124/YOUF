@@ -3,7 +3,7 @@ import { userAISubscription, login } from '../api/authAPI';
 import { useAuth } from '../auth/AuthContext';
 import { authStorage } from '../auth/AuthStorage';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../screen/type';
+import { RootStackParamList } from '../src/screen/type';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Alert } from 'react-native';
 

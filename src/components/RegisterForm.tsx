@@ -47,7 +47,6 @@ export default function RegisterForm({onCancel}: any) {
         onChangeText={setUsername}
       />
 
-      {/* ID + 체크버튼 */}
       <View style={styles.idRow}>
         <TextInput
           style={styles.idInput}

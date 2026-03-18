@@ -17,11 +17,11 @@ import {useRoute, RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../type';
 import CustomHeader from '../CustomHeader';
 import {useAuth} from '../../auth/AuthContext';
+import {BASE_URL, pub_endpoint, sub_endpoint} from '../../config/env';
 
-const SOCKET_URL =
-  Platform.OS === 'android'
-    ? 'http://10.0.2.2:8081/chat'
-    : 'http://localhost:8081/chat';
+const SOCKET_URL = `${BASE_URL}/chat`;
+const PUB_ENDPOINT = pub_endpoint;
+const SUB_ENDPOINT = sub_endpoint;
 
 type ChatRoomRouteProp = RouteProp<RootStackParamList, 'ChatRoom'>;
 
@@ -31,10 +31,6 @@ interface MessagesType {
   id: string;
   type: string;
 }
-
-// const SOCKET_URL = 'http://:8081/chat';
-const PUB_ENDPOINT = '/app/chat.sendMessage/';
-const SUB_ENDPOINT = '/topic/public/';
 
 const ChatRoom = () => {
   const route = useRoute<ChatRoomRouteProp>();
@@ -184,16 +180,20 @@ const ChatRoom = () => {
     }
   }, [messages, isInitialLoad, isUserScrolling]);
 
-  const sendMessage = (newMessage: any) => {
+  interface SendMessage {
+    content: string;
+  }
+  const sendMessage = (newMessage: SendMessage) => {
     if (
       isConnected &&
       stompClient &&
       stompClient.connected &&
       newMessage.content.trim() !== ''
     ) {
-      const messageWithId = {
-        ...newMessage,
-        id: messageId,
+      const messageWithId: MessagesType = {
+        content: newMessage.content,
+        sender: userId ?? 'USER',
+        id: String(messageId),
         type: 'USER',
       };
 

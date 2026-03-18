@@ -1,5 +1,5 @@
 import React from 'react';
-import RootStack from './screen/RootStack';
+import RootStack from './src/screens/RootStack';
 
 const App = () => {
   return <RootStack />;

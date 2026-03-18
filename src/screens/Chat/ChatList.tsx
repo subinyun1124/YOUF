@@ -10,7 +10,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../type';
-import {userAISubscription} from '../../api/authAPI';
+import {userAISubscription} from '../../../api/authAPI';
 import {useAuth} from '../../auth/AuthContext';
 
 interface ChatParams {

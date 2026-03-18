@@ -72,3 +72,21 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# ENV
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Upload files
+uploads/
+
+# VSCode
+.vscode/
+
+# temp
+*.swp
+*.swo
