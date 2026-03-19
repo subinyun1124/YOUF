@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import {customAIList, AISubcription} from '../../../api/authAPI';
+import {customAIList, AISubcription} from '../../api/authAPI';
 import {useAuth} from '../../auth/AuthContext';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';

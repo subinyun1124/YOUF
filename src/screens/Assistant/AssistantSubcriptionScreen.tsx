@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import {RootStackParamList, GPTsParams} from '../type';
 import {useAuth} from '../../auth/AuthContext';
-import {AISubcription, customAIList} from '../../../api/authAPI';
+import {AISubcription, customAIList} from '../../api/authAPI';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import LinearGradient from 'react-native-linear-gradient';

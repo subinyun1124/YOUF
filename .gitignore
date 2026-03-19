@@ -77,6 +77,12 @@ yarn-error.log
 .env
 .env.*
 
+# config (환경값)
+/src/config/*.ts
+!/src/config/env.ts
+!/src/config/index.ts
+!/src/config/*.example.ts
+
 # Logs
 logs/
 *.log

@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import Config from 'react-native-config';
-console.log('config체크', Config.API_BASE_URL_LOCAL);
 
 function LoginScreen() {
   const [isRegister, setIsRegister] = useState(false);

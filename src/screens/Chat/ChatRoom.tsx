@@ -17,11 +17,11 @@ import {useRoute, RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from '../type';
 import CustomHeader from '../CustomHeader';
 import {useAuth} from '../../auth/AuthContext';
-import {BASE_URL, pub_endpoint, sub_endpoint} from '../../config/env';
+import ENV from '../../config';
 
-const SOCKET_URL = `${BASE_URL}/chat`;
-const PUB_ENDPOINT = pub_endpoint;
-const SUB_ENDPOINT = sub_endpoint;
+const SOCKET_URL = `${ENV.API_URL}/chat`;
+const PUB_ENDPOINT = '/app/chat.sendMessage/';
+const SUB_ENDPOINT = '/topic/public/';
 
 type ChatRoomRouteProp = RouteProp<RootStackParamList, 'ChatRoom'>;
 

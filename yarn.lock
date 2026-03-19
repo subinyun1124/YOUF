@@ -6233,11 +6233,6 @@ react-native-blob-util@^0.21.2:
     base-64 "0.1.0"
     glob "^10.3.10"
 
-react-native-config@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.npmjs.org/react-native-config/-/react-native-config-1.6.1.tgz"
-  integrity sha512-HvKtxr6/Tq3iMdFx5REYZsjCtPi0RxQOMCs15+DqrUPTNFtWHuEuh+zw7fJp+dmuO79YMfdtlsPWIGTHtaXwjg==
-
 react-native-device-info@^14.0.4:
   version "14.0.4"
 
