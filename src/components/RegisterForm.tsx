@@ -23,11 +23,11 @@ export default function RegisterForm({onCancel}: any) {
   const checkId = async () => {
     const data = await checkUserId(userId);
 
-    if (data.data) {
-      Alert.alert('사용 가능한 아이디');
+    if (!data) {
+      Alert.alert('사용 가능한 아이디입니다');
       setIdCheck(true);
     } else {
-      Alert.alert('이미 존재하는 아이디');
+      Alert.alert('이미 존재하는 아이디입니다');
     }
   };
 
@@ -73,7 +73,13 @@ export default function RegisterForm({onCancel}: any) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => register({userId, username, email, password})}>
+        onPress={() => {
+          if (!idCheck) {
+            Alert.alert('아이디 중복 체크를 해주세요');
+            return;
+          }
+          register({userId, username, email, password});
+        }}>
         <Text style={styles.text}>회원가입</Text>
       </TouchableOpacity>
 

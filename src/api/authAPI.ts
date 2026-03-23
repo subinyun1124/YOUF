@@ -31,7 +31,9 @@ export const login = async (params: loginParams) => {
 
 // 아이디 중복 체크
 export const checkUserId = async (userId:string) => {
-  const response = await api.get('/api/auth/check' + userId);
+  const response = await api.get(
+  '/api/auth/check/' + userId
+  );
   return response.data.data;
 };
 
