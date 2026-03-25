@@ -210,7 +210,12 @@ export const updateAssistant = async (params: UpdateAssistantParams) => {
 // 유저 별 구독한 AI 들의 스케줄 가져오기
 export const userAISubscriptionScheduler = async (userId: string, aiSubscriptionId: string) => {
   const response = await api.get(
-    '/api/auth/schedule/job?userId=' + userId
+    '/api/auth/schedule/job',
+    {
+      params: {
+        userId,
+      },
+    }
   );
   return response.data.data;
 };
