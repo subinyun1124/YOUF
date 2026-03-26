@@ -43,7 +43,7 @@ type GPTsWithQuartz = GPTsParams & {
 
 const UserSubscriptionList = () => {
   const {user} = useAuth();
-  const userId = user?.userId;
+  const id = user?.id;
 
   const [GPTsDetail, setGPTsDetail] = useState<GPTsWithQuartz[]>([]);
   const [subscriptionVersion, setSubscriptionVersion] = useState(0);
@@ -56,20 +56,16 @@ const UserSubscriptionList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (userId) {
+      if (id) {
         try {
-          const subscriptionList = await userAISubscription(userId);
-          console.log('UserAISubscription: ', subscriptionList);
+          const subscriptionList = await userAISubscription(id);
           const enrichedList: GPTsWithQuartz[] = await Promise.all(
             subscriptionList.map(async (item: any) => {
               const aiSubscriptionId = item.id;
               const aiData: GPTsParams = item.customAIRespDto;
 
               try {
-                const schedulerList = await userAISubscriptionScheduler(
-                  userId,
-                  aiSubscriptionId,
-                );
+                const schedulerList = await userAISubscriptionScheduler(id);
 
                 // subscriptionId가 일치하는 스케줄만 필터링
                 const filteredSchedulers = schedulerList.filter(
@@ -111,7 +107,7 @@ const UserSubscriptionList = () => {
     };
 
     fetchData();
-  }, [userId, subscriptionVersion]);
+  }, [id, subscriptionVersion]);
 
   const handleCancelSubscription = async (aiSubscriptionId: string) => {
     Alert.alert('구독 해지', '정말로 구독을 해지하시겠습니까?', [
@@ -173,7 +169,7 @@ const UserSubscriptionList = () => {
   };
 
   const handleConfirmTimer = (time: string, days: string[]) => {
-    if (!userId) {
+    if (!id) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }

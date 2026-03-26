@@ -63,7 +63,7 @@ export const customAIList = async (creator:string, active:string, hidden:string)
 
 // AI 구독하기
 interface AISubcriptionParams {
-  userId: string;
+  id: number;
   customAiId: string;
 }
 export const AISubcription = async (params: AISubcriptionParams) => {
@@ -83,9 +83,9 @@ export const AIUnSubcription = async (aiSubscriptionId: string) => {
 
 
 // 유저 별 구독 내역 가져오기
-export const userAISubscription = async (userId: string) => {
+export const userAISubscription = async (id: number) => {
   const response = await api.get(
-    '/api/auth/aisubscription/relation/' + userId
+    '/api/auth/aisubscription/relation/' + id
   );
   return response.data.data;
 };
@@ -101,9 +101,9 @@ export const userAISubscriptionChat = async (AiId:string) => {
 
 
 // 유저 별 구독한 AI 들의 마지막 채팅 가져오기
-export const userAISubscriptionLastChat = async (userId: string) => {
+export const userAISubscriptionLastChat = async (id: number) => {
   const response = await api.get(
-    '/api/auth/messages/latest/AI/' + userId
+    '/api/auth/messages/latest/AI/' + id
   );
   return response.data.data;
 };
@@ -111,7 +111,7 @@ export const userAISubscriptionLastChat = async (userId: string) => {
 
 // YOUF 생성
 interface createAssistantParams {
-  userId: string;
+  id: number;
   // userToken: string;
   name: string;
   description: string;
@@ -123,7 +123,7 @@ interface createAssistantParams {
 export const createAssistant = async (params: createAssistantParams) => {
   const formData = new FormData();
   const jsonData = {
-    userId: params.userId,
+    userId: params.id,
     name: params.name,
     description: params.description,
     baseAiId: params.baseAiId,
@@ -159,7 +159,7 @@ export const createAssistant = async (params: createAssistantParams) => {
 
 // YOUF 상세정보 수정
 interface UpdateAssistantParams {
-  userId: string;
+  user_id: number;
   id: string;
   name: string;
   description: string;
@@ -174,7 +174,7 @@ export const updateAssistant = async (params: UpdateAssistantParams) => {
   const formData = new FormData();
 
   const jsonData = {
-    userId: params.userId,
+    user_id: params.user_id,
     id: params.id,
     name: params.name,
     description: params.description,
@@ -208,14 +208,9 @@ export const updateAssistant = async (params: UpdateAssistantParams) => {
 
 
 // 유저 별 구독한 AI 들의 스케줄 가져오기
-export const userAISubscriptionScheduler = async (userId: string, aiSubscriptionId: string) => {
+export const userAISubscriptionScheduler = async (id: number) => {
   const response = await api.get(
-    '/api/auth/schedule/job',
-    {
-      params: {
-        userId,
-      },
-    }
+    '/api/auth/schedule/job?userId=' + id
   );
   return response.data.data;
 };
@@ -235,7 +230,7 @@ interface qurtzScheduler {
       subscriptionId: string
   },
   status: string,
-  userId: string
+  userId: number
 }
 export const qurtzSchedule = async (params: qurtzScheduler) => {
   

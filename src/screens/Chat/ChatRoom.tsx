@@ -26,7 +26,7 @@ const SUB_ENDPOINT = '/topic/public/';
 type ChatRoomRouteProp = RouteProp<RootStackParamList, 'ChatRoom'>;
 
 interface MessagesType {
-  sender: string;
+  sender: number;
   content: string;
   id: string;
   type: string;
@@ -36,7 +36,7 @@ const ChatRoom = () => {
   const route = useRoute<ChatRoomRouteProp>();
   const {subscriptionId, YOUFName, YOUFImage} = route.params;
   const {user} = useAuth();
-  const userId = user?.userId;
+  const user_id = user?.id;
 
   const [isConnected, setIsConnected] = useState(false);
   const [connectionMessage, setConnectionMessage] =
@@ -52,7 +52,7 @@ const ChatRoom = () => {
 
   const typeMessage = (
     fullText: string,
-    sender: string,
+    sender: number,
     id: string,
     type: string,
   ) => {
@@ -84,7 +84,7 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    if (!userId) return;
+    if (!user_id) return;
 
     const client = new Client({
       webSocketFactory: () => new SockJS(SOCKET_URL),
@@ -96,7 +96,7 @@ const ChatRoom = () => {
         setIsConnected(true);
         setConnectionMessage('');
 
-        client.subscribe(SUB_ENDPOINT + userId, (message: IMessage) => {
+        client.subscribe(SUB_ENDPOINT + user_id, (message: IMessage) => {
           const receiveData = JSON.parse(message.body);
           console.log('receiveData:', receiveData);
 
@@ -146,7 +146,7 @@ const ChatRoom = () => {
       }
       setStompClient(null);
     };
-  }, [userId]);
+  }, [user_id]);
 
   useEffect(() => {
     if (subscriptionId) {
@@ -184,6 +184,8 @@ const ChatRoom = () => {
     content: string;
   }
   const sendMessage = (newMessage: SendMessage) => {
+    if (!user_id) return;
+
     if (
       isConnected &&
       stompClient &&
@@ -192,13 +194,13 @@ const ChatRoom = () => {
     ) {
       const messageWithId: MessagesType = {
         content: newMessage.content,
-        sender: userId ?? 'USER',
+        sender: user_id,
         id: String(messageId),
         type: 'USER',
       };
 
       stompClient.publish({
-        destination: PUB_ENDPOINT + userId,
+        destination: PUB_ENDPOINT + user_id,
         body: JSON.stringify(messageWithId),
       });
 

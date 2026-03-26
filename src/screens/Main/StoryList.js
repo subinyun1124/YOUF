@@ -7,22 +7,21 @@ const BASE_URL = 'https://cdn.pixabay.com/photo/2025/03/07/13/12/flower-9453063_
 
 const StoryList = () => {
    const {user} = useAuth();
-   const userId = user?.userId;
+   const id = user?.id;
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true); // 로딩 상태
 
   useEffect(() => {
-    if(userId) {
-      getSubscriptions(userId);
+    if(id) {
+      getSubscriptions(id);
     }
-  }, [userId]);
+  }, [id]);
 
-  const getSubscriptions = async (userid: string) => {
+  const getSubscriptions = async (user_id: number) => {
     try{
       setLoading(true);
 
-      const data = await userAISubscription(userid);
-      console.log('story : ', data );
+      const data = await userAISubscription(user_id);
 
       setSubscriptions(data || []);
     } catch(e) {

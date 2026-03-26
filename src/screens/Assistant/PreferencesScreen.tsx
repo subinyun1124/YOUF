@@ -24,24 +24,19 @@ const PreferencesScreen = () => {
   const [list, setList] = useState<AIItem[]>([]);
 
   const {user} = useAuth();
-  const userId = user?.userId;
-  console.log('userId', userId);
+  const id = user?.id;
   useEffect(() => {
-    console.log('PreferencesScreen useEffect 실행');
-    if (userId) {
+    if (id) {
       const getCustomAIList = async () => {
-        console.log('customAIList 호출 시작');
         const customAIListdata: AIItem[] = await customAIList('', 'Y', 'N');
-        console.log('받아온 AI 목록:', customAIListdata);
         const data = [...customAIListdata].sort(
           (a, b) => new Date(a.id).getTime() - new Date(b.id).getTime(),
         );
-        console.log(data);
         setList(data || []);
       };
       getCustomAIList();
     }
-  }, [userId]);
+  }, [id]);
 
   const toggleSelection = (item: AIItem) => {
     setSelectedPreferences(prev =>
@@ -52,7 +47,7 @@ const PreferencesScreen = () => {
   };
 
   const handleSubscribe = async () => {
-    if (!userId) {
+    if (!id) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -68,7 +63,7 @@ const PreferencesScreen = () => {
         onPress: async () => {
           try {
             for (const aiId of selectedPreferences) {
-              await AISubcription({userId, customAiId: aiId});
+              await AISubcription({id, customAiId: aiId});
             }
             Alert.alert('완료', '선호 AI가 저장되었습니다.');
             navigation.navigate('Main');

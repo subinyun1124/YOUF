@@ -19,19 +19,19 @@ interface ChatMessage {
 
 const MainChat = () => {
   const {user} = useAuth();
-  const userId = user?.userId?.toString();
+  const user_id = user?.id;
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!user_id) return;
 
     const fetchMessages = async () => {
       setLoading(true);
 
       try {
-        const data = await userAISubscriptionLastChat(userId);
+        const data = await userAISubscriptionLastChat(user_id);
         console.log('받아온 데이터: ', data);
         setMessages(data);
       } catch (error) {
@@ -42,7 +42,7 @@ const MainChat = () => {
     };
 
     fetchMessages();
-  }, [userId]);
+  }, [user_id]);
 
   return (
     <View style={styles.container}>

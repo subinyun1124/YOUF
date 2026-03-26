@@ -27,8 +27,7 @@ interface BaseAIItem {
 
 const CreateAssistantScreen = () => {
   const {user} = useAuth();
-  console.log('user: ', user);
-  const userId = user?.userId;
+  const id = user?.id;
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [baseAiId, setBaseAiId] = useState<string>('');
@@ -72,7 +71,7 @@ const CreateAssistantScreen = () => {
   };
 
   const handleSave = async () => {
-    if (!userId) {
+    if (!id) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -84,7 +83,7 @@ const CreateAssistantScreen = () => {
         onPress: async () => {
           try {
             await createAssistant({
-              userId,
+              id,
               name,
               description,
               baseAiId,

@@ -17,10 +17,11 @@ const useLogin = () => {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: async (data) => {
-      console.log(data);
       const auth = {
         user: {
+          id: data.id,
           userId: data.userId,
+          username: data.userName,
           email: data.email,
           role: data.role,
           loginAt: data.loginAt,
@@ -37,7 +38,7 @@ const useLogin = () => {
       try {
 
         const subData =
-          await userAISubscription(data.userId);
+          await userAISubscription(data.id);
 
         if ((subData || []).length > 0) {
           navigation.navigate('Main');

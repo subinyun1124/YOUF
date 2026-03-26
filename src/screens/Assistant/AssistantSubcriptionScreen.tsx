@@ -26,7 +26,7 @@ const CARD_WIDTH = width - CARD_MARGIN * 2;
 
 const AssistantSubscriptionScreen = () => {
   const {user} = useAuth();
-  const userId = user?.userId;
+  const id = user?.id;
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const [GPTsDetail, setGPTsDetail] = useState<GPTsParams[]>([]);
@@ -38,7 +38,7 @@ const AssistantSubscriptionScreen = () => {
   const thumbListRef = useRef<FlatList>(null);
 
   useEffect(() => {
-    if (userId) {
+    if (id) {
       const fetchData = async () => {
         try {
           const data = await customAIList('', 'Y', 'N');
@@ -51,7 +51,7 @@ const AssistantSubscriptionScreen = () => {
       };
       fetchData();
     }
-  }, [userId]);
+  }, [id]);
 
   const handleSearch = (text: string) => {
     setSearchText(text);
@@ -73,7 +73,7 @@ const AssistantSubscriptionScreen = () => {
   };
 
   const handleSubscribe = async () => {
-    if (!userId) {
+    if (!id) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -86,7 +86,7 @@ const AssistantSubscriptionScreen = () => {
           try {
             const currentItem = GPTsDetail[currentIndex];
             const customAiId = currentItem?.id;
-            await AISubcription({userId, customAiId});
+            await AISubcription({id, customAiId});
             if (Platform.OS === 'ios') {
               Alert.alert('알림', '구독 성공');
             } else {

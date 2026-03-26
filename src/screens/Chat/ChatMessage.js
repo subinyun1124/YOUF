@@ -5,7 +5,7 @@ interface Props {
   message: string;
   type: string;
   isTyping?: boolean;
-  sender?: string;
+  sender?: number;
   aiName?: string;
   aiImageUrl?: string;
 }

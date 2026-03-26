@@ -27,7 +27,7 @@ type GPTsDetailRouteProp = RouteProp<RootStackParamList, 'GPTsDetail'>;
 
 const GPTsDetail = () => {
   const {user} = useAuth();
-  const userId = user?.userId;
+  const user_id = user?.id;
   const userRole = user?.role;
 
   const route = useRoute<GPTsDetailRouteProp>();
@@ -75,7 +75,7 @@ const GPTsDetail = () => {
   };
 
   const handleSave = async () => {
-    if (!userId) {
+    if (!user_id) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -87,7 +87,7 @@ const GPTsDetail = () => {
         onPress: async () => {
           try {
             await updateAssistant({
-              userId,
+              user_id,
               id,
               name,
               description,
@@ -121,7 +121,7 @@ const GPTsDetail = () => {
   };
 
   const handleApprove = () => {
-    if (!userId) {
+    if (!user_id) {
       Alert.alert('오류', '유저 정보가 없습니다.');
       return;
     }
@@ -133,7 +133,7 @@ const GPTsDetail = () => {
         onPress: async () => {
           try {
             await updateAssistant({
-              userId,
+              user_id,
               id,
               name,
               description,
