@@ -23,15 +23,15 @@ interface ChatParams {
 
 export default function ChatList() {
   const {user} = useAuth();
-  const id = user?.id;
+  const userId = user?.id;
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [chatRoom, setChatRoom] = useState<ChatParams[]>([]);
 
   useEffect(() => {
-    if (!id) return;
+    if (!userId) return;
     const getCustomAIList = async () => {
       try {
-        const response = await userAISubscription(id);
+        const response = await userAISubscription(userId);
         console.log('AI 목록 원본:', response);
 
         const formattedData: ChatParams[] = response.map((item: any) => {
@@ -52,7 +52,7 @@ export default function ChatList() {
       }
     };
     getCustomAIList();
-  }, [id]);
+  }, [userId]);
 
   const renderItem = ({item}: {item: ChatParams}) => (
     <TouchableOpacity

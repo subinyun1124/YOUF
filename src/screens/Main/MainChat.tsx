@@ -31,7 +31,7 @@ const MainChat = () => {
       setLoading(true);
 
       try {
-        const data = await userAISubscriptionLastChat(user_id);
+        const data = await userAISubscriptionLastChat();
         console.log('받아온 데이터: ', data);
         setMessages(data);
       } catch (error) {

@@ -46,7 +46,7 @@ export const baseAIList = async () => {
 
 
 // 전체 CustomAI 리스트 가져오기
-export const customAIList = async (creator:string, active:string, hidden:string) => {
+export const customAIList = async (creator:number, active:string, hidden:string) => {
   const response = await api.get(
     '/api/auth/ai/custom/all',
     {
@@ -83,9 +83,9 @@ export const AIUnSubcription = async (aiSubscriptionId: string) => {
 
 
 // 유저 별 구독 내역 가져오기
-export const userAISubscription = async (id: number) => {
+export const userAISubscription = async () => {
   const response = await api.get(
-    '/api/auth/aisubscription/relation/' + id
+    '/api/auth/aisubscription/relation'
   );
   return response.data.data;
 };
@@ -101,9 +101,9 @@ export const userAISubscriptionChat = async (AiId:string) => {
 
 
 // 유저 별 구독한 AI 들의 마지막 채팅 가져오기
-export const userAISubscriptionLastChat = async (id: number) => {
+export const userAISubscriptionLastChat = async () => {
   const response = await api.get(
-    '/api/auth/messages/latest/AI/' + id
+    '/api/auth/messages/latest/AI'
   );
   return response.data.data;
 };
@@ -160,7 +160,7 @@ export const createAssistant = async (params: createAssistantParams) => {
 // YOUF 상세정보 수정
 interface UpdateAssistantParams {
   user_id: number;
-  id: string;
+  id: number;
   name: string;
   description: string;
   baseAiId: string;

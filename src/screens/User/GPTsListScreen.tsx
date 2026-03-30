@@ -16,7 +16,7 @@ import {RootStackParamList, GPTsParams} from '../type';
 
 const GPTsListScreen = () => {
   const {user} = useAuth();
-  const userId = user?.userId;
+  const userId = user?.id;
   const userRole = user?.role;
   const [GPTsDetail, setGPTsDetail] = useState<GPTsParams[]>([]);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -30,11 +30,11 @@ const GPTsListScreen = () => {
         let data: GPTsParams[] = [];
         try {
           if (userRole === 'ADMIN') {
-            filteredData = await customAIList('', 'Y', '');
+            filteredData = await customAIList(0, 'Y', '');
           } else {
-            customAiListData = await customAIList(userId.toString(), 'Y', '');
+            customAiListData = await customAIList(userId, 'Y', '');
             filteredData = customAiListData.filter(
-              (item: GPTsParams) => item.createByUsrId.toString() === userId,
+              (item: GPTsParams) => item.createByUsrId === userId,
             );
           }
           data = [...filteredData].sort(
