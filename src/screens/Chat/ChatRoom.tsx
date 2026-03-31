@@ -21,7 +21,7 @@ import ENV from '../../config';
 
 const SOCKET_URL = `${ENV.API_URL}/chat`;
 const PUB_ENDPOINT = '/app/chat.sendMessage/';
-const SUB_ENDPOINT = '/topic/public/';
+const SUB_ENDPOINT = '/topic/public/ai/';
 
 type ChatRoomRouteProp = RouteProp<RootStackParamList, 'ChatRoom'>;
 
@@ -36,7 +36,7 @@ const ChatRoom = () => {
   const route = useRoute<ChatRoomRouteProp>();
   const {subscriptionId, YOUFName, YOUFImage} = route.params;
   const {user} = useAuth();
-  const user_id = user?.id;
+  const userId = user?.id;
 
   const [isConnected, setIsConnected] = useState(false);
   const [connectionMessage, setConnectionMessage] =
@@ -84,7 +84,7 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    if (!user_id) return;
+    if (!userId) return;
 
     const client = new Client({
       webSocketFactory: () => new SockJS(SOCKET_URL),
@@ -96,7 +96,7 @@ const ChatRoom = () => {
         setIsConnected(true);
         setConnectionMessage('');
 
-        client.subscribe(SUB_ENDPOINT + user_id, (message: IMessage) => {
+        client.subscribe(PUB_ENDPOINT + subscriptionId, (message: IMessage) => {
           const receiveData = JSON.parse(message.body);
           console.log('receiveData:', receiveData);
 
@@ -146,7 +146,7 @@ const ChatRoom = () => {
       }
       setStompClient(null);
     };
-  }, [user_id]);
+  }, [userId, subscriptionId]);
 
   useEffect(() => {
     if (subscriptionId) {
@@ -184,7 +184,7 @@ const ChatRoom = () => {
     content: string;
   }
   const sendMessage = (newMessage: SendMessage) => {
-    if (!user_id) return;
+    if (!userId) return;
 
     if (
       isConnected &&
@@ -194,13 +194,13 @@ const ChatRoom = () => {
     ) {
       const messageWithId: MessagesType = {
         content: newMessage.content,
-        sender: user_id,
+        sender: userId,
         id: String(messageId),
         type: 'USER',
       };
 
       stompClient.publish({
-        destination: PUB_ENDPOINT + user_id,
+        destination: PUB_ENDPOINT + subscriptionId,
         body: JSON.stringify(messageWithId),
       });
 
