@@ -96,7 +96,7 @@ const ChatRoom = () => {
         setIsConnected(true);
         setConnectionMessage('');
 
-        client.subscribe(PUB_ENDPOINT + subscriptionId, (message: IMessage) => {
+        client.subscribe(SUB_ENDPOINT + subscriptionId, (message: IMessage) => {
           const receiveData = JSON.parse(message.body);
           console.log('receiveData:', receiveData);
 
