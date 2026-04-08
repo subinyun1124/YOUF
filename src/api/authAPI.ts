@@ -218,19 +218,16 @@ export const userAISubscriptionScheduler = async (id: number) => {
 
 // 쿼츠 스케줄 상태 변경
 interface qurtzScheduler {
-  jobName: string,
-  jobGroup: string,
-  jobClass:string,
-  cronExpression: string,
-  description : string,
-  jobType : string,
-  jobData: {
-      prompt: string,
-      senderName: string,
-      subscriptionId: string
-  },
-  status: string,
-  userId: number
+  jobName: string;
+  jobGroup: string;
+  jobClass: string;
+  cronExpression: string;
+  description: string;
+  jobType: string;
+  jobData: object;
+  status: string;
+  userId: number;
+  aisubscriptionId: number;
 }
 export const qurtzSchedule = async (params: qurtzScheduler) => {
   
@@ -246,7 +243,7 @@ export const qurtzSchedule = async (params: qurtzScheduler) => {
     //     "subscriptionId": "19"
     // },
     // "status":"ENABLED",
-    // "userId":"John"
+    // "userId":"1"
 
   const response = await api.post<AuthResult>(
     '/api/auth/schedule/create',

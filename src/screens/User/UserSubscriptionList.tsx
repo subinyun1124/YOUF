@@ -34,7 +34,7 @@ type GPTsWithQuartz = GPTsParams & {
     jobGroup: string;
     cronExpression: string;
     jobType: string;
-    jobData: any;
+    jobData: object;
     status: string;
     createdAt: string;
     updatedAt: string;
@@ -194,6 +194,32 @@ const UserSubscriptionList = () => {
     ]);
   };
 
+  const testSchedule = async () => {
+    try {
+      await qurtzSchedule({
+        jobName: 'test_job_1',
+        jobGroup: 'SendMessageAI',
+        jobClass: 'com.uf.assistance.batchjob.DynamicQuartzJob',
+        cronExpression: '0 0/1 * * * ?', // 1분마다 실행
+        description: '테스트 스케줄',
+        jobType: 'SendMessageAI',
+        jobData: {
+          prompt: '테스트 메시지입니다',
+          senderName: 'GPT',
+          subscriptionId: '1',
+        },
+        status: 'ENABLED',
+        userId: 1,
+        aisubscriptionId: 1,
+      });
+
+      Alert.alert('성공', '스케줄 등록됨');
+    } catch (e) {
+      console.error(e);
+      Alert.alert('실패', '에러 발생');
+    }
+  };
+
   const renderItem = ({item}: {item: GPTsWithQuartz}) => (
     <View style={styles.row}>
       <TouchableOpacity
@@ -237,7 +263,7 @@ const UserSubscriptionList = () => {
         <Scheduler
           visible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
-          onConfirm={handleConfirmTimer}
+          onConfirm={testSchedule}
           initialTime={initialTime || undefined}
           initialDays={initialDays}
         />
